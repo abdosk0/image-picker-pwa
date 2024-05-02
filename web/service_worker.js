@@ -1,5 +1,3 @@
-// web/service_worker.js
-
 var CACHE_NAME = 'my-pwa-cache';
 var urlsToCache = [
   '/',

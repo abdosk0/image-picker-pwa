@@ -42,6 +42,12 @@
 </head>
 <body>
   <script src="main.dart.js" type="application/javascript"></script>
+    <!-- HTML input element for image selection -->
+    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+    <!-- Placeholder for displaying selected image -->
+    <div id="imageContainer"></div>
+    <!-- Button to trigger image selection -->
+    <button onclick="handleImageSelection()">Select or Capture Image</button>
   <script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js

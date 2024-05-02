@@ -1,8 +1,7 @@
-import 'dart:io';
-
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'dart:typed_data';
 import 'dart:html' as html;
+import 'package:flutter/material.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Image Picker Demo',
+      title: 'My Flutter PWA',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -31,46 +30,38 @@ class ImagePickerPage extends StatefulWidget {
 }
 
 class _ImagePickerPageState extends State<ImagePickerPage> {
-  File? _imageFile;
-  final ImagePicker _picker = ImagePicker();
+  Uint8List? _imageBytes;
 
-  Future<void> _pickImage(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(source: source);
-    setState(() {
-      if (pickedFile != null) {
-        _imageFile = File(pickedFile.path);
-      } else {
-        print('No image selected.');
-      }
-    });
+  void _pickImage() async {
+    final Uint8List? imageBytes = await ImagePickerWeb.getImageAsBytes();
+    if (imageBytes != null) {
+      setState(() {
+        _imageBytes = imageBytes;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Image Picker Demo'),
+        title: Text('Image Picker PWA'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            if (_imageFile != null)
-              Image.file(
-                _imageFile!,
+            if (_imageBytes != null)
+              Image.memory(
+                _imageBytes!,
                 height: 200,
               )
             else
               Text('No image selected'),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () => _pickImage(ImageSource.gallery),
-              child: Text('Select Image'),
-            ),
-            SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () => _pickImage(ImageSource.camera),
-              child: Text('Take Photo'),
+              onPressed: _pickImage,
+              child: Text('Select or Capture Image'),
             ),
           ],
         ),
