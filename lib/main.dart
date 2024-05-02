@@ -7,7 +7,7 @@ import 'dart:html' as html;
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   if (html.window.navigator.serviceWorker != null) {
-    html.window.navigator.serviceWorker!.register('custom_service_worker.js');
+    html.window.navigator.serviceWorker!.register('service_worker.js');
   }
   runApp(MyApp());
 }
