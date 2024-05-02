@@ -49,14 +49,25 @@
     <!-- Button to trigger image selection -->
     <button onclick="handleImageSelection()">Select or Capture Image</button>
   <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service_worker.js')
+          .then((registration) => {
+            console.log('Service Worker registered with scope:', registration.scope);
+          })
+          .catch((error) => {
+            console.error('Service Worker registration failed:', error);
+          });
+      }
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
       _flutter.loader.loadEntrypoint({
         serviceWorker: {
           serviceWorkerVersion: serviceWorkerVersion,
         },
-        onEntrypointLoaded: function(engineInitializer) {
-          engineInitializer.initializeEngine().then(function(appRunner) {
+        onEntrypointLoaded: function (engineInitializer) {
+          engineInitializer.initializeEngine({
+            useColorEmoji: true, // add this parameter
+          }).then(function (appRunner) {
             appRunner.runApp();
           });
         }
